@@ -43,29 +43,29 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
-                use: {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[hash].[ext]',
-                        outputPath: 'images/',
-                    },
+                test: /\.(jpe?g|png|gif|svg|woff|eot|otf|webp|tff)$/i,
+                type: "asset",
+                // include:[srcDir], // 可以转为base64
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 0.01 * 1024 // 小于10kb的图片被base64处理
+                    }
+                },
+                generator: {
+                    filename: 'static/image/[name]-[hash:6][ext]' // 图片的输出路径
+                }
+            },  // 字体视频文件的处理
+            {
+                test: /\.(ttf|woff2?|map4|map3|avi|xlsx|ttc)$/,
+                type: "asset/resource", // 原封不动的输出
+                generator: {
+                    filename: "static/media/[name]-[hash:6][ext]",
                 },
             },
             {
                 test: /\.json$/,
                 loader: 'json-loader',
                 type: 'javascript/auto',
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[hash].[ext]',
-                        outputPath: 'fonts/',
-                    },
-                },
             },
         ],
     },
